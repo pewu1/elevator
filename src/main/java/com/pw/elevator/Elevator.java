@@ -84,7 +84,6 @@ public class Elevator implements Runnable {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
         }
         try {
             destinationFloor = toFloor;

@@ -34,8 +34,6 @@ public class RequestHandler implements Runnable {
         }
     }
 
-
-
     protected Request processRequests() {
         Set<Request> processedRequests = new HashSet<>();
         Request processedRequest = new Request();

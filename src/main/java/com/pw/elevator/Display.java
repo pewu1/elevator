@@ -14,7 +14,6 @@ public class Display implements Runnable {
 
     private void print(){
         clearScreen();
-        System.out.println("Elevators: ");
         elevatorHandler.getElevators().stream().forEach(System.out::println);
         System.out.println();
         System.out.println("Pending requests: ");
@@ -23,8 +22,7 @@ public class Display implements Runnable {
     }
 
     private void clearScreen() {
-        final String os = System.getProperty("os.name");
-        if (os.contains("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             try {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } catch (InterruptedException e) {
