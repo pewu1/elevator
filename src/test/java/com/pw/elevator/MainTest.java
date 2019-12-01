@@ -18,6 +18,5 @@ class MainTest {
         toFloor = 0;
         Direction result2 = Main.calculateDirection(fromFloor, toFloor);
         assertThat(result2).isEqualTo(Direction.DOWN);
-
     }
 }

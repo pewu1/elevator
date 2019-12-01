@@ -5,7 +5,7 @@ public class Main {
     public static int NUMBER_OF_ELEVATORS = 7;
     public static int NUMBER_OF_FLOORS = 55;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         ElevatorHandler elevatorHandler = new ElevatorHandler();
 
         RequestHandler requestHandler = new RequestHandler();
