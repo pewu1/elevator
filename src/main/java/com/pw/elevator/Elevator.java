@@ -56,14 +56,18 @@ public class Elevator implements Runnable {
         this.direction = direction;
     }
 
+    public void move() throws InterruptedException {
+        direction = Main.calculateDirection(currentFloor, destinationFloor);
+        while (currentFloor != destinationFloor) {
+            Thread.sleep(1000);
 
-    @Override
-    public String toString() {
-        return "Elevator " + elevatorNum + " [" +
-                "current floor: " + currentFloor +
-                " destination floor: " + destinationFloor +
-                " direction: " + direction +
-                ']';
+            if (direction == Direction.UP) {
+                currentFloor++;
+            } else if (direction == Direction.DOWN) {
+                currentFloor--;
+            }
+        }
+        direction = Direction.STOP;
     }
 
     public int getToFloor() {
@@ -93,18 +97,13 @@ public class Elevator implements Runnable {
         }
     }
 
-    public void move() throws InterruptedException {
-        direction = Main.calculateDirection(currentFloor, destinationFloor);
-        while (currentFloor != destinationFloor) {
-            Thread.sleep(1000);
-
-            if (direction == Direction.UP) {
-                currentFloor++;
-            } else if (direction == Direction.DOWN) {
-                currentFloor--;
-            }
-        }
-        direction = Direction.STOP;
+    @Override
+    public String toString() {
+        return "Elevator " + elevatorNum + " [" +
+                "current floor: " + currentFloor +
+                " destination floor: " + destinationFloor +
+                " direction: " + direction +
+                ']';
     }
 }
 
