@@ -61,8 +61,8 @@ public class Elevator implements Runnable {
     public String toString() {
         return "Elevator " + elevatorNum + " [" +
                 "current floor: " + currentFloor +
-                ", destination floor:" + destinationFloor +
-                ", direction:" + direction +
+                ", destination floor: " + destinationFloor +
+                ", direction: " + direction +
                 ']';
     }
 
