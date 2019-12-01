@@ -61,8 +61,8 @@ public class Elevator implements Runnable {
     public String toString() {
         return "Elevator " + elevatorNum + " [" +
                 "current floor: " + currentFloor +
-                ", destination floor: " + destinationFloor +
-                ", direction: " + direction +
+                " destination floor: " + destinationFloor +
+                " direction: " + direction +
                 ']';
     }
 
@@ -96,7 +96,6 @@ public class Elevator implements Runnable {
 
     public void move() throws InterruptedException {
         direction = Main.calculateDirection(currentFloor, destinationFloor);
-//        System.out.println(this.toString());
         while (currentFloor != destinationFloor) {
             Thread.sleep(1000);
 
@@ -105,10 +104,8 @@ public class Elevator implements Runnable {
             } else if (direction == Direction.DOWN) {
                 currentFloor--;
             }
-//            System.out.println(this.toString());
         }
         direction = Direction.STOP;
-//        System.out.println(this.toString());
     }
 }
 

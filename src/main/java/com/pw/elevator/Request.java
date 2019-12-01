@@ -42,8 +42,8 @@ public class Request {
     @Override
     public String toString() {
         return  "Request from: " + fromFloor +
-                ", to: " + toFloor +
-                ", direction: " + direction;
+                " to: " + toFloor +
+                " direction: " + direction;
     }
 
     @Override

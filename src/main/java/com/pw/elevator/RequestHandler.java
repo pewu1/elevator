@@ -14,7 +14,7 @@ public class RequestHandler implements Runnable {
     public RequestHandler() {
     }
 
-    public void setElevatorHandler(ElevatorHandler elevatorHandler) {
+    public void setElevatorHandler(final ElevatorHandler elevatorHandler) {
         this.elevatorHandler = elevatorHandler;
     }
 
@@ -26,29 +26,34 @@ public class RequestHandler implements Runnable {
 
         if (!Main.isInputDataOk(fromFloor, toFloor)) {
             throw new IllegalArgumentException();
+        } else {
+            Request request = new Request(fromFloor, toFloor);
+            request.setDirection(Main.calculateDirection(request));
+            requests.add(request);
+            System.out.println("New! " + request.toString());
         }
-
-        Request request = new Request(fromFloor, toFloor);
-        request.setDirection(Main.calculateDirection(fromFloor, toFloor));
-        requests.add(request);
-        System.out.println("New request: " + request.toString());
     }
 
-    private Request processRequests() {
+
+
+    protected Request processRequests() {
         Set<Request> processedRequests = new HashSet<>();
         Request processedRequest = new Request();
-        Optional<Request> firstRequest = requests.stream().min(Comparator.comparingInt(Request::getFromFloor));
+        int averageCurrentFloor = elevatorHandler.calculateAvgCurrentFloor();
+        Optional<Request> firstRequest = requests.stream().min(Comparator.comparingInt(req -> Math.abs((req.getFromFloor() - averageCurrentFloor))));
         if (firstRequest.isPresent()) {
             processedRequest.setFromFloor(firstRequest.get().getFromFloor());
+
             if (firstRequest.get().getDirection() == Direction.UP) {
-                processedRequests.addAll(requests.stream().filter(request1 -> request1.getFromFloor() >= firstRequest.get().getFromFloor() && request1.getDirection() == Direction.UP).collect(Collectors.toSet()));
+                processedRequests.addAll(requests.stream().filter(req -> req.getFromFloor() >= firstRequest.get().getFromFloor()
+                        && req.getDirection() == Direction.UP).collect(Collectors.toSet()));
                 processedRequest.setToFloor(processedRequests.stream().max(Comparator.comparingInt(Request::getToFloor)).get().getToFloor());
             } else {
-                processedRequests.addAll(requests.stream().filter(request1 -> request1.getFromFloor() <= firstRequest.get().getFromFloor() && request1.getDirection() == Direction.DOWN).collect(Collectors.toSet()));
+                processedRequests.addAll(requests.stream().filter(req -> req.getFromFloor() <= firstRequest.get().getFromFloor() && req.getDirection() == Direction.DOWN).collect(Collectors.toSet()));
                 processedRequest.setToFloor(processedRequests.stream().min(Comparator.comparingInt(Request::getToFloor)).get().getToFloor());
             }
         }
-        processedRequest.setDirection(Main.calculateDirection(processedRequest.getFromFloor(), processedRequest.getToFloor()));
+        processedRequest.setDirection(Main.calculateDirection(processedRequest));
         requests.removeAll(processedRequests);
         return processedRequest;
     }
@@ -59,9 +64,11 @@ public class RequestHandler implements Runnable {
             while (!requests.isEmpty()) {
                 elevatorHandler.getRequestQueue().add(processRequests());
             }
-
-
+            try {
+                Thread.currentThread().sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 }

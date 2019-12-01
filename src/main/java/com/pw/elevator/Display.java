@@ -1,5 +1,7 @@
 package com.pw.elevator;
 
+import java.io.IOException;
+
 public class Display implements Runnable {
 
     private ElevatorHandler elevatorHandler;
@@ -11,12 +13,34 @@ public class Display implements Runnable {
     }
 
     private void print(){
-        System.out.flush();
+        clearScreen();
+        System.out.println("Elevators: ");
         elevatorHandler.getElevators().stream().forEach(System.out::println);
-        requestHandler.getRequests().stream().forEach(System.out::println);
+        System.out.println();
+        System.out.println("Pending requests: ");
+        elevatorHandler.getRequestQueue().stream().forEach(System.out::println);
 
     }
 
+    private void clearScreen() {
+        final String os = System.getProperty("os.name");
+        if (os.contains("Windows")) {
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                Runtime.getRuntime().exec("clear");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void run() {
