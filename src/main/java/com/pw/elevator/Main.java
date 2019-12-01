@@ -6,11 +6,14 @@ public class Main {
     public static int NUMBER_OF_FLOORS = 55;
 
     public static void main(String[] args) throws InterruptedException {
-        RequestHandler requestHandler = new RequestHandler();
         ElevatorHandler elevatorHandler = new ElevatorHandler();
+
+        RequestHandler requestHandler = new RequestHandler();
         requestHandler.setElevatorHandler(elevatorHandler);
 
         Display display = new Display(elevatorHandler, requestHandler);
+
+        ReqGenerator reqGenerator = new ReqGenerator(requestHandler);
 
         Thread requestHandlerTh = new Thread(requestHandler);
         requestHandlerTh.start();
@@ -21,24 +24,8 @@ public class Main {
         Thread displayTh = new Thread(display);
         displayTh.start();
 
-        while (true) {
-
-            int a = (int) (Math.random() * 55);
-            int b;
-            do {
-                b = (int) (Math.random() * 55);
-            } while (a == b);
-           try {
-               requestHandler.addRequest(a, b);
-           } catch (IllegalArgumentException e) {
-               System.out.println("Input data invalid (" + a + ", " + b + ")");
-           }
-            Thread.sleep(1000);
-
-
-        }
-
-
+        Thread reqGeneratorTh = new Thread(reqGenerator);
+        reqGeneratorTh.start();
     }
 
     public static boolean isInputDataOk(int currentFloor, int destinationFloor) {

@@ -18,7 +18,7 @@ public class RequestHandler implements Runnable {
         this.elevatorHandler = elevatorHandler;
     }
 
-    public Set<Request> getRequests() {
+    public synchronized Set<Request> getRequests() {
         return requests;
     }
 
@@ -64,11 +64,6 @@ public class RequestHandler implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             while (!requests.isEmpty()) {
                 elevatorHandler.getRequestQueue().add(processRequests());
-            }
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }

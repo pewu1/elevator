@@ -7,7 +7,7 @@ import static java.lang.Math.abs;
 
 public class ElevatorHandler implements Runnable {
 
-    private volatile List<Elevator> elevators = new ArrayList<>();
+    private volatile List<Elevator> elevators = new CopyOnWriteArrayList<>();
     private List<Request> requestQueue = new CopyOnWriteArrayList<>();
 
     ElevatorHandler() {
@@ -59,7 +59,7 @@ public class ElevatorHandler implements Runnable {
         return requestQueue;
     }
 
-    public List<Elevator> getElevators() {
+    public synchronized List<Elevator> getElevators() {
         return elevators;
     }
 
@@ -68,12 +68,7 @@ public class ElevatorHandler implements Runnable {
 
         while (!Thread.currentThread().isInterrupted()) {
             while (!requestQueue.isEmpty()) {
-                callElevator(requestQueue.get(0));
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                requestQueue.stream().forEach(request -> callElevator(request));
             }
         }
 
