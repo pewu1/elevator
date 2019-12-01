@@ -7,7 +7,7 @@ import static java.lang.Math.abs;
 
 public class ElevatorHandler implements Runnable {
 
-    private List<Elevator> elevators = new CopyOnWriteArrayList<>();
+    private List<Elevator> elevators = new ArrayList<>();
     private List<Request> requestQueue = new CopyOnWriteArrayList<>();
 
     ElevatorHandler() {
@@ -48,9 +48,9 @@ public class ElevatorHandler implements Runnable {
     }
 
     private void callElevator(final Request request) {
-        if (getNearestElevator(request).isPresent()) {
-            Elevator elevator = getNearestElevator(request).get();
-            moveElevator(elevator, request);
+        Optional<Elevator> elevator = getNearestElevator(request);
+        if (elevator.isPresent()) {
+            moveElevator(elevator.get(), request);
             requestQueue.remove(request);
         }
     }

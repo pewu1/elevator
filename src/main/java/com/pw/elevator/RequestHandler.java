@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
 public class RequestHandler implements Runnable {
@@ -16,10 +17,6 @@ public class RequestHandler implements Runnable {
 
     public void setElevatorHandler(final ElevatorHandler elevatorHandler) {
         this.elevatorHandler = elevatorHandler;
-    }
-
-    public synchronized Set<Request> getRequests() {
-        return requests;
     }
 
     public void addRequest(final int fromFloor, final int toFloor) throws IllegalArgumentException {
