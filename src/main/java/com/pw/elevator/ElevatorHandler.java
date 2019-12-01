@@ -16,36 +16,34 @@ public class ElevatorHandler implements Runnable {
 
     private void createElevators() {
         for (int i = 0; i < Main.NUMBER_OF_ELEVATORS; i++) {
-            elevators.add(i, new Elevator(i+1,0, 0, Direction.STOP));
+            elevators.add(i, new Elevator(i + 1, 0, 0, Direction.STOP));
         }
     }
 
     protected int calculateAvgCurrentFloor() {
         return elevators.stream()
-                .mapToInt(elevator -> elevator.getCurrentFloor())
-                .reduce((floor1, floor2) -> floor1 + floor2)
+                .mapToInt(Elevator::getCurrentFloor)
+                .reduce(Integer::sum)
                 .getAsInt() / elevators.size();
     }
 
     protected Optional<Elevator> getNearestElevator(final Request request) {
         Optional<Elevator> nearestElev;
-            nearestElev = elevators.stream()
-                    .filter(elevator -> elevator.getDirection() == request.getDirection() || elevator.getDirection() == Direction.STOP).min(Comparator.comparingInt(elevator -> abs(elevator.getCurrentFloor() - request.getFromFloor())));
+        nearestElev = elevators.stream()
+                .filter(elevator -> elevator.getDirection() == request.getDirection() || elevator.getDirection() == Direction.STOP).min(Comparator.comparingInt(elevator -> abs(elevator.getCurrentFloor() - request.getFromFloor())));
         return nearestElev;
     }
 
-    private void moveElevator(final Elevator elevator, final Request request) {
-        if (elevator.getCurrentFloor() != request.getToFloor()) {
-            if (elevator.getDirection() == Direction.STOP) {
-                elevator.setFromFloor(request.getFromFloor());
-                elevator.setToFloor(request.getToFloor());
-                Thread elevatorTh = new Thread(elevator);
-                elevatorTh.setName(String.valueOf(elevator.getElevatorNum()));
-                elevatorTh.start();
-            } else if ((elevator.getDirection() == Direction.UP && elevator.getToFloor() < request.getToFloor())
-                    || (elevator.getDirection() == Direction.DOWN && elevator.getToFloor() > request.getToFloor())) {
-                elevator.setToFloor(request.getToFloor());
-            }
+    protected void moveElevator(final Elevator elevator, final Request request) {
+        if (elevator.getDirection() == Direction.STOP) {
+            elevator.setFromFloor(request.getFromFloor());
+            elevator.setToFloor(request.getToFloor());
+            Thread elevatorTh = new Thread(elevator);
+            elevatorTh.setName(String.valueOf(elevator.getElevatorNum()));
+            elevatorTh.start();
+        } else if ((elevator.getDirection() == Direction.UP && elevator.getToFloor() < request.getToFloor())
+                || (elevator.getDirection() == Direction.DOWN && elevator.getToFloor() > request.getToFloor())) {
+            elevator.setToFloor(request.getToFloor());
         }
     }
 
@@ -73,7 +71,7 @@ public class ElevatorHandler implements Runnable {
                 callElevator(requestQueue.get(0));
             }
             try {
-                Thread.currentThread().sleep(500);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -2,8 +2,8 @@ package com.pw.elevator;
 
 public class Main {
 
-    public static final int NUMBER_OF_ELEVATORS = 7;
-    public static final int NUMBER_OF_FLOORS = 55;
+    public static int NUMBER_OF_ELEVATORS = 7;
+    public static int NUMBER_OF_FLOORS = 55;
 
     public static void main(String[] args) throws InterruptedException {
         RequestHandler requestHandler = new RequestHandler();

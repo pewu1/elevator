@@ -41,6 +41,7 @@ public class RequestHandler implements Runnable {
         Request processedRequest = new Request();
         int averageCurrentFloor = elevatorHandler.calculateAvgCurrentFloor();
         Optional<Request> firstRequest = requests.stream().min(Comparator.comparingInt(req -> Math.abs((req.getFromFloor() - averageCurrentFloor))));
+
         if (firstRequest.isPresent()) {
             processedRequest.setFromFloor(firstRequest.get().getFromFloor());
 
@@ -65,7 +66,7 @@ public class RequestHandler implements Runnable {
                 elevatorHandler.getRequestQueue().add(processRequests());
             }
             try {
-                Thread.currentThread().sleep(200);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
