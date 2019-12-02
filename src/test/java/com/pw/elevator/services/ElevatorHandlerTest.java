@@ -1,12 +1,15 @@
-package com.pw.elevator;
+package com.pw.elevator.services;
 
+import com.pw.elevator.enums.Direction;
+import com.pw.elevator.pojos.Elevator;
+import com.pw.elevator.pojos.Request;
+import com.pw.elevator.utils.ElevatorUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ElevatorHandlerTest {
 
@@ -14,15 +17,15 @@ class ElevatorHandlerTest {
     void shouldCreateCorrectNumberOfElevators() {
         ElevatorHandler elevatorHandler = new ElevatorHandler();
 
-        assertThat(elevatorHandler.getElevators().size()).isEqualTo(Main.NUMBER_OF_ELEVATORS);
+        assertThat(elevatorHandler.getElevators().size()).isEqualTo(ElevatorUtil.NUMBER_OF_ELEVATORS);
     }
 
     @Test
     void shouldReturnNearestElevator() {
         ElevatorHandler elevatorHandler = new ElevatorHandler();
         Request request = new Request();
-        Main.NUMBER_OF_ELEVATORS = 4;
-        Main.NUMBER_OF_FLOORS = 50;
+        ElevatorUtil.NUMBER_OF_ELEVATORS = 4;
+        ElevatorUtil.NUMBER_OF_FLOORS = 50;
         request.setFromFloor(5);
         request.setToFloor(15);
         request.setDirection(Direction.UP);
@@ -66,8 +69,8 @@ class ElevatorHandlerTest {
     void shouldMoveElevatorAsRequested() {
         ElevatorHandler elevatorHandler = new ElevatorHandler();
         Request request = new Request();
-        Main.NUMBER_OF_ELEVATORS = 4;
-        Main.NUMBER_OF_FLOORS = 50;
+        ElevatorUtil.NUMBER_OF_ELEVATORS = 4;
+        ElevatorUtil.NUMBER_OF_FLOORS = 50;
         request.setFromFloor(5);
         request.setToFloor(15);
         request.setDirection(Direction.UP);

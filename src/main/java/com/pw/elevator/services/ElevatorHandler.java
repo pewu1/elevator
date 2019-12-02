@@ -1,7 +1,16 @@
-package com.pw.elevator;
+package com.pw.elevator.services;
 
-import java.util.*;
+import com.pw.elevator.enums.Direction;
+import com.pw.elevator.pojos.Elevator;
+import com.pw.elevator.pojos.Request;
+import com.pw.elevator.utils.ElevatorUtil;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.abs;
 
@@ -10,14 +19,13 @@ public class ElevatorHandler implements Runnable {
     private List<Elevator> elevators = new ArrayList<>();
     private List<Request> requestQueue = new CopyOnWriteArrayList<>();
 
-    ElevatorHandler() {
+    public ElevatorHandler() {
         createElevators();
     }
 
     private void createElevators() {
-        for (int i = 0; i < Main.NUMBER_OF_ELEVATORS; i++) {
-            elevators.add(i, new Elevator(i + 1, 0, 0, Direction.STOP));
-        }
+        IntStream.range(0, ElevatorUtil.NUMBER_OF_ELEVATORS)
+                .forEach(index -> elevators.add(index, new Elevator(index + 1, 0, 0, Direction.STOP)));
     }
 
     protected int calculateAvgCurrentFloor() {

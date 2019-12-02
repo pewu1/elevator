@@ -1,10 +1,13 @@
-package com.pw.elevator;
+package com.pw.elevator.services;
+
+import com.pw.elevator.enums.Direction;
+import com.pw.elevator.pojos.Request;
+import com.pw.elevator.utils.ElevatorUtil;
 
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
 public class RequestHandler implements Runnable {
@@ -21,11 +24,11 @@ public class RequestHandler implements Runnable {
 
     public void addRequest(final int fromFloor, final int toFloor) throws IllegalArgumentException {
 
-        if (!Main.isInputDataOk(fromFloor, toFloor)) {
+        if (!ElevatorUtil.isInputDataValid(fromFloor, toFloor)) {
             throw new IllegalArgumentException();
         } else {
             Request request = new Request(fromFloor, toFloor);
-            request.setDirection(Main.calculateDirection(request));
+            request.setDirection(ElevatorUtil.calculateDirection(request));
             requests.add(request);
             System.out.println("New! " + request.toString());
         }
@@ -49,7 +52,7 @@ public class RequestHandler implements Runnable {
                 processedRequest.setToFloor(processedRequests.stream().min(Comparator.comparingInt(Request::getToFloor)).get().getToFloor());
             }
         }
-        processedRequest.setDirection(Main.calculateDirection(processedRequest));
+        processedRequest.setDirection(ElevatorUtil.calculateDirection(processedRequest));
         requests.removeAll(processedRequests);
         return processedRequest;
     }

@@ -1,4 +1,7 @@
-package com.pw.elevator;
+package com.pw.elevator.pojos;
+
+import com.pw.elevator.enums.Direction;
+import com.pw.elevator.utils.ElevatorUtil;
 
 public class Elevator implements Runnable {
 
@@ -9,7 +12,7 @@ public class Elevator implements Runnable {
     private int elevatorNum;
     private Direction direction;
 
-    Elevator(int elevatorNum, int currentFloor, int destinationFloor, Direction direction) {
+    public Elevator(int elevatorNum, int currentFloor, int destinationFloor, Direction direction) {
         this.elevatorNum = elevatorNum;
         this.currentFloor = currentFloor;
         this.destinationFloor = destinationFloor;
@@ -57,7 +60,7 @@ public class Elevator implements Runnable {
     }
 
     public void move() throws InterruptedException {
-        direction = Main.calculateDirection(currentFloor, destinationFloor);
+        direction = ElevatorUtil.calculateDirection(currentFloor, destinationFloor);
         while (currentFloor != destinationFloor) {
             Thread.sleep(1000);
 

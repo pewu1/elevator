@@ -1,4 +1,6 @@
-package com.pw.elevator;
+package com.pw.elevator.pojos;
+
+import com.pw.elevator.enums.Direction;
 
 import java.util.Objects;
 
@@ -7,7 +9,7 @@ public class Request {
     private int toFloor;
     private Direction direction;
 
-    Request(int fromFloor, int toFloor) {
+    public Request(int fromFloor, int toFloor) {
         this.fromFloor = fromFloor;
         this.toFloor = toFloor;
     }
@@ -41,7 +43,7 @@ public class Request {
 
     @Override
     public String toString() {
-        return  "Request from: " + fromFloor +
+        return "Request from: " + fromFloor +
                 " to: " + toFloor +
                 " direction: " + direction;
     }

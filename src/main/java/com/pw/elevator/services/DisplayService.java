@@ -1,18 +1,18 @@
-package com.pw.elevator;
+package com.pw.elevator.services;
 
 import java.io.IOException;
 
-public class Display implements Runnable {
+public class DisplayService implements Runnable {
 
     private ElevatorHandler elevatorHandler;
     private RequestHandler requestHandler;
 
-    public Display(ElevatorHandler elevatorHandler, RequestHandler requestHandler) {
+    public DisplayService(ElevatorHandler elevatorHandler, RequestHandler requestHandler) {
         this.elevatorHandler = elevatorHandler;
         this.requestHandler = requestHandler;
     }
 
-    private void print(){
+    private void print() {
         clearScreen();
         elevatorHandler.getElevators().stream().forEach(System.out::println);
         System.out.println();
@@ -30,8 +30,7 @@ public class Display implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             try {
                 Runtime.getRuntime().exec("clear");
             } catch (IOException e) {
